@@ -1,6 +1,6 @@
 # 📜 docusaurus-plugin-llms
 
-A Docusaurus plugin for generating LLM-friendly documentation following the [llmtxt standard](https://llmtxt.org/).
+A Docusaurus plugin for generating LLM-friendly documentation following the [llmtxt standard](https://llmstxt.org/).
 
 ## Installation
 
@@ -91,7 +91,7 @@ This plugin automatically generates the following files during the build process
 - **llms.txt**: Contains links to all sections of your documentation
 - **llms-full.txt**: Contains all documentation content in a single file
 
-These files follow the [llmtxt standard](https://llmtxt.org/), making your documentation optimized for use with Large Language Models (LLMs).
+These files follow the [llmtxt standard](https://llmstxt.org/), making your documentation optimized for use with Large Language Models (LLMs).
 
 ## Features
 
