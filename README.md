@@ -1,32 +1,8 @@
 # 📜 docusaurus-plugin-llms
 
-A Docusaurus plugin for generating LLM-friendly documentation following the [llmtxt standard](https://llmstxt.org/).
+A Docusaurus plugin for generating LLM-friendly documentation following the [llmstxt standard](https://llmstxt.org/).
 
 ## Installation
-
-There are two ways to use this plugin:
-
-### 1. Direct Integration (Simplest Method)
-
-For quick integration, create a plugin file directly in your Docusaurus project:
-
-```bash
-mkdir -p src/plugins/llms
-```
-
-Then create a file at `src/plugins/llms/index.js` with the plugin code. Finally, add it to your `docusaurus.config.js`:
-
-```js
-module.exports = {
-  // ... your existing Docusaurus config
-  plugins: [
-    require('./src/plugins/llms'),
-    // ... your other plugins
-  ],
-};
-```
-
-### 2. As a Package (Not Yet Published)
 
 ```bash
 npm install docusaurus-plugin-llms --save-dev
@@ -72,17 +48,17 @@ module.exports = {
 
 ### Available Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `generateLLMsTxt` | boolean | `true` | Whether to generate the links file |
-| `generateLLMsFullTxt` | boolean | `true` | Whether to generate the full content file |
-| `docsDir` | string | `'docs'` | Base directory for documentation files |
-| `ignoreFiles` | string[] | `[]` | Array of glob patterns for files to ignore |
-| `title` | string | Site title | Custom title to use in generated files |
-| `description` | string | Site tagline | Custom description to use in generated files |
-| `llmsTxtFilename` | string | `'llms.txt'` | Custom filename for the links file |
-| `llmsFullTxtFilename` | string | `'llms-full.txt'` | Custom filename for the full content file |
-| `includeBlog` | boolean | `false` | Whether to include blog content |
+| Option                | Type     | Default           | Description                                  |
+|-----------------------|----------|-------------------|----------------------------------------------|
+| `generateLLMsTxt`     | boolean  | `true`            | Whether to generate the links file           |
+| `generateLLMsFullTxt` | boolean  | `true`            | Whether to generate the full content file    |
+| `docsDir`             | string   | `'docs'`          | Base directory for documentation files       |
+| `ignoreFiles`         | string[] | `[]`              | Array of glob patterns for files to ignore   |
+| `title`               | string   | Site title        | Custom title to use in generated files       |
+| `description`         | string   | Site tagline      | Custom description to use in generated files |
+| `llmsTxtFilename`     | string   | `'llms.txt'`      | Custom filename for the links file           |
+| `llmsFullTxtFilename` | string   | `'llms-full.txt'` | Custom filename for the full content file    |
+| `includeBlog`         | boolean  | `false`           | Whether to include blog content              |
 
 ## How It Works
 
@@ -91,7 +67,7 @@ This plugin automatically generates the following files during the build process
 - **llms.txt**: Contains links to all sections of your documentation
 - **llms-full.txt**: Contains all documentation content in a single file
 
-These files follow the [llmtxt standard](https://llmstxt.org/), making your documentation optimized for use with Large Language Models (LLMs).
+These files follow the [llmstxt standard](https://llmstxt.org/), making your documentation optimized for use with Large Language Models (LLMs).
 
 ## Features
 
