@@ -8,7 +8,9 @@
     "watch": "tsc --watch",
     "cleanup": "node cleanup.js",
     "prepublishOnly": "npm run build && npm run cleanup",
-    "test": "echo \"No tests specified\""
+    "test:unit": "node tests/test-path-transforms.js",
+    "test:integration": "node tests/test-path-transformation.js",
+    "test": "npm run build && npm run test:unit && npm run test:integration"
   },
   "files": [
     "lib",

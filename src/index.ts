@@ -55,6 +55,14 @@ interface PluginOptions {
   
   /** Whether to include blog content (default: false) */
   includeBlog?: boolean;
+  
+  /** Path transformation options for URL construction */
+  pathTransformation?: {
+    /** Path segments to ignore when constructing URLs (will be removed if found) */
+    ignorePaths?: string[];
+    /** Path segments to add when constructing URLs (will be prepended if not already present) */
+    addPaths?: string[];
+  };
 }
 
 /**
@@ -166,18 +174,69 @@ function cleanMarkdownContent(content: string): string {
 }
 
 /**
+ * Apply path transformations according to configuration
+ * @param urlPath - Original URL path
+ * @param pathTransformation - Path transformation configuration
+ * @returns Transformed URL path
+ */
+function applyPathTransformations(
+  urlPath: string,
+  pathTransformation?: PluginOptions['pathTransformation']
+): string {
+  if (!pathTransformation) {
+    return urlPath;
+  }
+
+  let transformedPath = urlPath;
+  
+  // Remove ignored path segments
+  if (pathTransformation.ignorePaths?.length) {
+    for (const ignorePath of pathTransformation.ignorePaths) {
+      // Create a regex that matches the ignore path at the beginning, middle, or end of the path
+      // We use word boundaries to ensure we match complete path segments
+      const ignoreRegex = new RegExp(`(^|/)(${ignorePath})(/|$)`, 'g');
+      transformedPath = transformedPath.replace(ignoreRegex, '$1$3');
+    }
+    
+    // Clean up any double slashes that might have been created
+    transformedPath = transformedPath.replace(/\/+/g, '/');
+    
+    // Remove leading slash if present
+    transformedPath = transformedPath.replace(/^\//, '');
+  }
+  
+  // Add path segments if they're not already present
+  if (pathTransformation.addPaths?.length) {
+    // Process in reverse order to maintain the specified order in the final path
+    // This is because each path is prepended to the front
+    const pathsToAdd = [...pathTransformation.addPaths].reverse();
+    
+    for (const addPath of pathsToAdd) {
+      // Only add if not already present at the beginning
+      if (!transformedPath.startsWith(addPath + '/') && transformedPath !== addPath) {
+        transformedPath = `${addPath}/${transformedPath}`;
+      }
+    }
+  }
+  
+  return transformedPath;
+}
+
+/**
  * Process a markdown file and extract its metadata and content
  * @param filePath - Path to the markdown file
  * @param baseDir - Base directory
  * @param siteUrl - Base URL of the site
  * @param pathPrefix - Path prefix for URLs (e.g., 'docs' or 'blog')
+ * @param pathTransformation - Path transformation configuration
  * @returns Processed file data
  */
 async function processMarkdownFile(
   filePath: string, 
   baseDir: string, 
   siteUrl: string,
-  pathPrefix: string = 'docs'
+  pathPrefix: string = 'docs',
+  pathTransformation?: PluginOptions['pathTransformation']
 ): Promise<DocInfo> {
   const content = await readFile(filePath);
   const { data, content: markdownContent } = matter(content);
@@ -194,8 +253,21 @@ async function processMarkdownFile(
     ? linkPathBase.replace(/\/index$/, '') 
     : linkPathBase;
   
-  // Generate full URL
-  const fullUrl = new URL(`${pathPrefix}/${linkPath}`, siteUrl).toString();
+  // Apply path transformations to the link path
+  const transformedLinkPath = applyPathTransformations(linkPath, pathTransformation);
+  
+  // Also apply path transformations to the pathPrefix if it's not empty
+  // This allows removing 'docs' from the path when specified in ignorePaths
+  let transformedPathPrefix = pathPrefix;
+  if (pathPrefix && pathTransformation?.ignorePaths?.includes(pathPrefix)) {
+    transformedPathPrefix = '';
+  }
+  
+  // Generate full URL with transformed path and path prefix
+  const fullUrl = new URL(
+    `${transformedPathPrefix ? `${transformedPathPrefix}/` : ''}${transformedLinkPath}`, 
+    siteUrl
+  ).toString();
   
   // Extract title
   const title = extractTitle(data, markdownContent, filePath);
@@ -247,6 +319,7 @@ export default function docusaurusPluginLLMs(
     llmsTxtFilename = 'llms.txt',
     llmsFullTxtFilename = 'llms-full.txt',
     includeBlog = false,
+    pathTransformation,
   } = options;
 
   const {
@@ -296,7 +369,8 @@ export default function docusaurusPluginLLMs(
                   filePath, 
                   fullDocsDir, 
                   siteUrl,
-                  'docs'
+                  'docs',
+                  pathTransformation
                 );
                 allDocs.push(docInfo);
               } catch (err: any) {
@@ -329,7 +403,8 @@ export default function docusaurusPluginLLMs(
                     filePath, 
                     blogDir, 
                     siteUrl,
-                    'blog'
+                    'blog',
+                    pathTransformation
                   );
                   allDocs.push(docInfo);
                 } catch (err: any) {

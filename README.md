@@ -39,6 +39,13 @@ module.exports = {
         title: 'My Project Documentation',
         description: 'Complete reference documentation for My Project',
         includeBlog: true,
+        // Path transformation options
+        pathTransformation: {
+          // Paths to ignore when constructing URLs (will be removed if found)
+          ignorePaths: ['docs'],
+          // Paths to add when constructing URLs (will be prepended if not already present)
+          addPaths: ['api'],
+        },
       },
     ],
     // ... your other plugins
@@ -59,6 +66,40 @@ module.exports = {
 | `llmsTxtFilename`     | string   | `'llms.txt'`      | Custom filename for the links file           |
 | `llmsFullTxtFilename` | string   | `'llms-full.txt'` | Custom filename for the full content file    |
 | `includeBlog`         | boolean  | `false`           | Whether to include blog content              |
+| `pathTransformation`  | object   | `undefined`       | Path transformation options for URL construction |
+| `pathTransformation.ignorePaths` | string[] | `[]`    | Path segments to ignore when constructing URLs |
+| `pathTransformation.addPaths`   | string[] | `[]`    | Path segments to add when constructing URLs |
+
+### Path Transformation Examples
+
+The path transformation feature allows you to manipulate how URLs are constructed from file paths:
+
+**Example 1**: Remove 'docs' from the URL path
+```js
+pathTransformation: {
+  ignorePaths: ['docs'],
+}
+```
+File path: `/content/docs/manual/decorators.md` → URL: `https://example.com/manual/decorators`
+
+**Example 2**: Add 'api' to the URL path
+```js
+pathTransformation: {
+  addPaths: ['api'],
+}
+```
+File path: `/content/manual/decorators.md` → URL: `https://example.com/api/manual/decorators`
+
+**Example 3**: Combine both transformations
+```js
+pathTransformation: {
+  ignorePaths: ['docs'],
+  addPaths: ['api'],
+}
+```
+File path: `/content/docs/manual/decorators.md` → URL: `https://example.com/api/manual/decorators`
+
+The configuration supports multiple path segments in both arrays.
 
 ## How It Works
 
@@ -79,6 +120,7 @@ These files follow the [llmstxt standard](https://llmstxt.org/), making your doc
 - 🧹 Cleans HTML and normalizes content for optimal LLM consumption
 - 📊 Provides statistics about generated documentation
 - 📚 Option to include blog posts
+- 🔄 Path transformation to customize URL construction
 
 ## Implementation Details
 
@@ -88,9 +130,32 @@ The plugin:
 2. Optionally includes blog content
 3. Extracts metadata, titles, and content from each file
 4. Creates proper URL links to each document section
-5. Generates a table of contents in `llms.txt`
-6. Combines all documentation content in `llms-full.txt`
-7. Provides statistics about the generated documentation
+5. Applies path transformations according to configuration (removing or adding path segments)
+6. Generates a table of contents in `llms.txt`
+7. Combines all documentation content in `llms-full.txt`
+8. Provides statistics about the generated documentation
+
+## Testing
+
+The plugin includes comprehensive tests in the `tests` directory:
+
+- **Unit tests**: Test the path transformation functionality in isolation
+- **Integration tests**: Simulate a Docusaurus build with various configurations
+
+To run the tests:
+
+```bash
+# Run all tests
+npm test
+
+# Run just the unit tests
+npm run test:unit
+
+# Run just the integration tests
+npm run test:integration
+```
+
+For more detailed testing instructions, see [tests/TESTING.md](tests/TESTING.md).
 
 ## Future Enhancements
 
