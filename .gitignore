@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Production build directory
+lib/
+dist/
+
+# Coverage directory
+coverage/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db 
