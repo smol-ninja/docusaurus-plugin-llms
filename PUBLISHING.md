@@ -24,6 +24,7 @@ This document outlines the steps to publish the `docusaurus-plugin-llms` package
    - `major` (x.0.0) for breaking changes
 
    You can use npm to update the version:
+   
    ```bash
    # For a patch update (0.1.0 -> 0.1.1)
    npm version patch
@@ -60,7 +61,6 @@ This document outlines the steps to publish the `docusaurus-plugin-llms` package
    ```bash
    npm publish --access=public
    ```
-
 6. **Verify the published package**
 
    Check that your package is listed on npm:

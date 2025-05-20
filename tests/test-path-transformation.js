@@ -37,17 +37,17 @@ async function setupTestDocs() {
   // Create test markdown files
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'index.md'),
-    '---\ntitle: Home\n---\n\n# Home Page\n\nWelcome to the test docs.'
+    '---\ntitle: Home\ndescription: Welcome to the test docs.\n---\n\n# Home Page\n\nWelcome to the test docs.'
   );
   
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'getting-started.md'),
-    '---\ntitle: Getting Started\n---\n\n# Getting Started\n\nThis is a getting started guide.'
+    '---\ntitle: Getting Started\ndescription: This is a getting started guide.\n---\n\n# Getting Started\n\nThis is a getting started guide.'
   );
   
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'api', 'overview.md'),
-    '---\ntitle: API Overview\n---\n\n# API Overview\n\nThis is the API overview.'
+    '---\ntitle: API Overview\ndescription: This is the API overview.\n---\n\n# API Overview\n\nThis is the API overview.'
   );
 }
 

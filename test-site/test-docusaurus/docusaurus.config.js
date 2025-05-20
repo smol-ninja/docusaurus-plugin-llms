@@ -18,12 +18,68 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
     [
       'docusaurus-plugin-llms',
       {
-        // Configure the plugin
+        // Basic plugin options
+        siteTitle: 'Enhanced Test Documentation',
+        siteDescription: 'A comprehensive test suite for docusaurus-plugin-llms',
         pathTransformation: {
           ignorePaths: ['docs'],
-          addPaths: ['api'],
+          addPaths: ['api', 'reference'],
         },
         includeBlog: true,
+        version: '2.0.0',
+        
+        // Output file options
+        generateLLMsTxt: true,
+        generateLLMsFullTxt: true,
+        llmsTxtFilename: 'llms-index.txt',
+        llmsFullTxtFilename: 'llms-content.txt',
+        
+        // File filtering options
+        ignoreFiles: [
+          '**/*.test.md',
+          '**/private/**',
+          '**/internal-docs/**',
+        ],
+        
+        // Content ordering
+        includeOrder: [
+          '**/getting-started/*.md',
+          '**/core/*.md', 
+          '**/api/*.md',
+          '**/guides/*.md',
+          '**/examples/*.md',
+        ],
+        includeUnmatchedLast: true,
+        
+        // Custom LLM files for different use cases
+        customLLMFiles: [
+          {
+            filename: 'api-reference.txt',
+            title: 'API Reference Documentation',
+            description: 'Complete API reference for developers',
+            includePatterns: ['**/api/**/*.md', '**/reference/**/*.md'],
+            orderPatterns: ['**/api/overview.md', '**/*.md'],
+            fullContent: true,
+            version: '1.0.0'
+          },
+          {
+            filename: 'tutorials.txt',
+            title: 'Tutorials and Guides',
+            description: 'Step-by-step tutorials and guides',
+            includePatterns: ['**/tutorials/**/*.md', '**/guides/**/*.md'],
+            ignorePatterns: ['**/advanced/**/*.md'],
+            fullContent: true,
+            version: '0.9.5-beta'
+          },
+          {
+            filename: 'quick-reference.txt',
+            title: 'Quick Reference',
+            description: 'Concise reference with links to full documentation',
+            includePatterns: ['**/*.md'],
+            fullContent: false,
+            version: '1.1.0'
+          }
+        ]
       }
     ],
   ],
