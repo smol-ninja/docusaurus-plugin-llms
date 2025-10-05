@@ -1,5 +1,5 @@
 {
-  "name": "docusaurus-plugin-llms",
+  "name": "unofficial-docusaurus-plugin-llms",
   "version": "0.3.0",
   "description": "Docusaurus plugin for generating LLM-friendly documentation following the llmstxt.org standard",
   "main": "lib/index.js",
